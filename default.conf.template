@@ -1,0 +1,61 @@
+upstream application {
+
+    server ${PROXY_HOST}:${PROXY_PORT};
+
+}
+
+server {
+
+    listen 80;
+    server_name localhost;
+    charset utf-8;
+
+    gzip on;
+    gzip_types
+        text/css
+        text/javascript
+        text/xml
+        text/plain
+        application/javascript
+        application/x-javascript
+        application/json;
+
+    location /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location /media {
+        alias /www/media;
+        add_header Cache-Control must-revalidate;
+    }
+
+    location /static {
+        alias /www/static;
+        add_header Cache-Control must-revalidate;
+    }
+
+    location / {
+
+        proxy_pass http://application;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $server_name;
+
+        proxy_next_upstream error timeout http_500 http_502 http_503 http_504;
+        proxy_intercept_errors on;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
