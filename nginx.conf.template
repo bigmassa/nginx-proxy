@@ -1,9 +1,10 @@
 user nginx;
+worker_processes ${WORKER_PROCESSES};
 
 pid /var/run/nginx.pid;
 
 events {
-    worker_connections 1024;
+    worker_connections ${WORKER_CONNECTIONS};
 }
 
 http {
