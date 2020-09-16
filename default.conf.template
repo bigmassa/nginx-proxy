@@ -35,6 +35,12 @@ server {
         add_header Cache-Control must-revalidate;
     }
 
+    location /nginx-health {
+        access_log off;
+        default_type text/plain;
+        return 200 "healthy\n";
+    }
+
     location / {
 
         proxy_pass http://application;
