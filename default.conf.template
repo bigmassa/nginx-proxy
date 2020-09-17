@@ -4,10 +4,30 @@ upstream application {
 
 }
 
+# default server includes a health check only, all other responses are a 444
+
+server {
+
+    listen 80 default_server;
+    server_name _;
+
+    location /nginx-health {
+        access_log off;
+        default_type text/plain;
+        return 200 "healthy\n";
+    }
+
+    location / {
+        return 444;
+    }
+}
+
+# server to only respond to the set SERVER_NAME env var
+
 server {
 
     listen 80;
-    server_name localhost;
+    server_name ${SERVER_NAME};
     charset utf-8;
 
     gzip on;

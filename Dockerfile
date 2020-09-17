@@ -3,6 +3,7 @@ FROM        nginx:alpine
 ENV         CLIENT_MAX_BODY_SIZE=75M
 ENV         PROXY_HOST=app
 ENV         PROXY_PORT=80
+ENV         SERVER_NAME=localhost
 ENV         WORKER_CONNECTIONS=2048
 ENV         WORKER_PROCESSES=auto
 
