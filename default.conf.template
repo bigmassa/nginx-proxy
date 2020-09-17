@@ -40,19 +40,11 @@ server {
         application/x-javascript
         application/json;
 
+    root /www;
+
     location /favicon.ico {
         log_not_found off;
         access_log off;
-    }
-
-    location /media {
-        alias /www/media;
-        add_header Cache-Control must-revalidate;
-    }
-
-    location /static {
-        alias /www/static;
-        add_header Cache-Control must-revalidate;
     }
 
     location /nginx-health {
@@ -62,6 +54,10 @@ server {
     }
 
     location / {
+        try_files $uri @proxy_to_app;
+    }
+
+    location @proxy_to_app {
 
         proxy_pass http://application;
 

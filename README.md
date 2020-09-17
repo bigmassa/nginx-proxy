@@ -29,6 +29,26 @@ services:
 
 Then go to http://<SERVER_NAME>/
 
+## Volumes
+
+mount volumes into the folder /www these will be available from the root url eg:
+
+```
+version: '3'
+
+services:
+  app:
+    image: nginx:alpine
+  nginx:
+    ...
+    volumes:
+    - ./static:/www/static
+    ...
+```
+
+the files will then be available like `http://localhost/static/...`. Nginx will try these
+files before proxying off to the upstream server.
+
 ## Environment Variables
 
 - CLIENT_MAX_BODY_SIZE = client max body size (default: 75M)
