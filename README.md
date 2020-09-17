@@ -27,7 +27,7 @@ services:
     - "80:80"
 ```
 
-Then go to http://<SERVER_NAME>/
+Then go to http://localhost/
 
 ## Volumes
 
